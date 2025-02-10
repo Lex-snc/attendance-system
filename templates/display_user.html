@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            background-image: url("static/builtin/bj2.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            border: 2px solid #041E42;
+        }
+        .container h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color:  #041E42;
+        }
+        input[type="text"], input[type="hidden"] {
+            width: 380px;
+            padding: 10px;
+            border: 1px solid #041E42;
+            border-radius: 5px;
+            outline: none;
+        }
+        button[type="submit"] {
+            background-color:  #041E42;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #department {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #041E42;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            color: #333;
+        }
+        
+        /* Style for the select options */
+        #department option {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .button-back button {
+            display: inline-block;
+            background-color: #041E42;;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            margin-bottom: 10px; /* Add margin between the buttons */
+        }
+        
+        .button-back button:hover {
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>UPDATE PAGE</h1>
+        <form action="/update2" method="POST" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="id">USN:</label>
+                <input type="text" name="id" value="{{ data[0] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="fname">First Name:</label>
+                <input type="text" name="fname" id="fname" value="{{ data[1] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="mname">Middle Name:</label>
+                <input type="text" name="mname" id="mname" value="{{ data[2] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="lname">Last Name:</label>
+                <input type="text" name="lname" id="lname" value="{{ data[3] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" name="email" id="email" value="{{ data[4] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="department">Select Department</label>
+                <select id="department" name="department" value="{{ data[5]}}" required>
+                    <option value="TED">TED</option>
+                    <option value="CED">CED</option>
+                    <option value="BED">BED</option>
+                </select>
+            </div>
+            <button type="submit">Update</button>
+            <div class="button-back">
+                <a style = "color:#041E42;" href="/view" class="previous">&laquo; Go Back</a>
+        </form>
+    </div>
+    <script>
+        function validateForm() {
+            // Get values from the form
+            const eventInput = document.getElementById('id').value;
+            const startInput = document.getElementById('fname').value;
+            const endInput = document.getElementById('mname').value;
+            const timestartInput = document.getElementById('lname').value;
+            const timeendInput = document.getElementById('email').value;
+            const eventinfoInput = document.getElementById('department').value;
+    
+            // Check if any of the required fields is empty
+            if (!idInput || !fnameInput || !mnameInput || !lnameInput || !emailInput || !departmentInput) {
+                alert('Please fill in all required fields');
+                return false; // Prevent form submission
+            }
+            showSuccessPopup();
+    
+            // Continue with form submission
+            return true;
+        }
+    
+        function showSuccessPopup() {
+            alert('Updated Successfully');
+        }
+    </script>
+</body>
+</html>

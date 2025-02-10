@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image:url("static/builtin/bj2.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 300px;
+            border: 1px solid #041E42;
+        }
+
+        .container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333333;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color:#041E42;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 280px;
+            padding: 10px;
+            border: 1px solid #041E42;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color:  #041E42;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-group button:focus {
+            outline: none;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #041E42;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        /* Style for the select options */
+        select option {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #fff;
+            color: #333;
+        }
+        
+    </style>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Your existing head content -->
+</head>
+<body>
+    <div class="container">
+        <h1>Update Account</h1>
+        <form action="/update_ssg" method="POST" onsubmit="return validateForm()">
+            <div class="form-group">
+                <input type="hidden" name="id_ssg" value="{{ ssg[0] }}">
+                <label for="insti_email">Institutional Account:</label>
+                <input type="text" name="insti_email" value="{{ ssg[1] }}" placeholder="Enter Email" required>
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" value="{{ ssg[2] }}" placeholder="Enter password" required>
+                <input type="checkbox" onclick="togglePassword()"> Show Password
+            </div>
+            <div class="form-group">
+                <label for="usertype">Position</label>
+                <td>
+                    <select name="Position" id="Position" value="{{ ssg[3] }}" required>
+                        <option>President</option>
+                        <option>Vice President</option>
+                        <option>Secretary</option>
+                        <option>Senator</option>
+                    </select>
+                </td>
+            </div>
+            <div class="form-group">
+                <button type="submit">Update</button>
+            </div>
+            <a style="color: #041E42;" href="/ssglist" class="previous">&laquo; Go Back</a>
+        </form>
+    </div>
+
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+
+        function validateForm() {
+            var emailField = document.getElementById("insti_email");
+            var email = emailField.value.trim().toLowerCase();
+
+            if (email !== "yourdesiredusername@aclcbutuan.edu.ph") {
+                alert("Please enter a valid @aclcbutuan.edu.ph email address.");
+                return false;
+            }
+
+            // Additional validation logic can be added here if needed
+
+            return true;
+        }
+    </script>
+</body>
+</html>
+
+

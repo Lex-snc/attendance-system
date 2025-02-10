@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image:url("static/builtin/bg7.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        form {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border: 2px solid #041E42;
+            padding: 20px;
+            width: 300px;
+        }
+
+        form h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #041E42;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color:#041E42;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 280px;
+            padding: 10px;
+            border: 1px solid #041E42;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group select {
+            appearance: none; /* Remove default arrow on modern browsers */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23333333" width="18px" height="18px"><path d="M7 10l5 5 5-5z" /></svg>'); /* Add custom arrow */
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 30px; /* Adjust spacing for the arrow */
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #041E42;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        button[type="submit"]:focus {
+            outline: none;
+        }
+
+        .button-container {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: #041E42;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .button-container:hover {
+            background-color: #0056b3;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background-image: url('eye-icon.png'); /* Replace 'eye-icon.png' with your eye icon image path */
+            background-size: cover;
+            cursor: pointer;
+        }
+
+        /* Style for the visible state of the password toggle */
+        .password-toggle.visible {
+            background-image: url('eye-slash-icon.png'); /* Replace 'eye-slash-icon.png' with your eye slash icon image path */
+        }
+    </style>
+</head>
+<body>
+    <form action="insert_process3" method="POST">
+        <div class="form-group">
+            <input type="hidden" name="id" id="id" placeholder="id">
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" placeholder= "Enter Username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-container">
+                <input type="password" name="password" id="password" placeholder= "password" required>
+                <!-- Add a checkbox to toggle password visibility -->
+                <input type="checkbox" onclick="togglePassword()"> Show Password
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="display:none;" for="usertype">Usertype</label>
+            <select name="usertype" id="usertype" style="display:none;">
+                <option value="Admin">Admin</option>
+            </select>
+        </div>
+        <button type="submit">Done</button>
+    </form>
+
+    <div class="button-container">
+        <a style="color:white;"href="adminlist">Go Back</a>
+    </div>
+
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+    </script>
+</body>
+</html>

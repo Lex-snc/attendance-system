@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url("static/builtin/bj2.jpg"); /* Update the path to your image */
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        form {
+            background-color:white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            padding: 10px; /* Adjusted padding for a smaller form */
+            width: 330px; /* Adjusted width for a smaller form */
+            border: 1px solid #041E42;
+        }
+
+        form h1 {
+            text-align: center;
+            margin-bottom: 15px; /* Adjusted margin for smaller spacing */
+            color: #333333;
+            font-size: 20px; /* Adjusted font size */
+        }
+
+        .form-group {
+            margin-bottom: 15px; /* Adjusted margin for smaller spacing */
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #041E42;
+            font-weight: bold;
+            font-size: 14px; /* Adjusted font size for a smaller label */
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 95%;
+            padding: 8px; /* Adjusted padding for a smaller input */
+            border-radius: 5px;
+            border: 1px solid #041E42;
+            font-size: 14px; /* Adjusted font size for a smaller input */
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 8px; /* Adjusted padding for a smaller button */
+            background-color:  #041E42;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        button[type="submit"]:focus {
+            outline: none;
+        }
+        .button-container {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .button-container:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .button-back {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .button-back button {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .button-back button:hover {
+            background-color: #007bff;
+        }
+
+        #status {
+            display: block;
+            margin: 10px;
+        }
+
+        #status {
+            padding: 8px; /* Adjusted padding for a smaller select */
+            border: 1px solid #041E42;
+            border-radius: 5px;
+            font-size: 14px; /* Adjusted font size for a smaller select */
+            width: 200px;
+        }
+
+        #status option {
+            padding: 8px; /* Adjusted padding for a smaller option */
+            font-size: 14px; /* Adjusted font size for a smaller option */
+        }
+
+        .button-back button {
+            display: inline-block;
+            background-color: #041E42;
+            color: #000000;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            margin-bottom: 10px; /* Add margin between the buttons */
+        }
+        
+        .button-back button:hover {
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <form action="/update8" method="POST">
+        <div class="form-group">
+            <input type="hidden" name="id" id="id" value="{{ da[0] }}">
+        </div>
+        <div class="form-group">
+            <label for="event">Event</label>
+            <input type="text" name="event" id="event" value="{{ da[1] }}" required>
+        </div>
+        <div class="form-group">
+            <label for="start">Date Start</label>
+            <input type="date" name="start" id="start" onchange="updateEndDate()" value="{{ da[2] }}" required>
+        </div>
+        <div class="form-group">
+            <label for="end">Date End</label>
+            <input type="date" name="end" id="end" value="{{ da[3] }}" required>
+        </div>
+        <div class="form-group">
+            <label for="timestart">Time Start</label>
+            <input type="time" name="timestart" id="timestart" onchange="updateEndTime()" value="{{ da[5] }}" required>
+        </div>
+        <div class="form-group">
+            <label for="timeend">Time End</label>
+            <input type="time" name="timeend" id="timeend" value="{{ da[6] }}" required>
+        </div>
+        <div class="form-group">
+            <label for="eventinfo">Event Information</label>
+            <input type="text" name="eventinfo" id="eventinfo" style="height: 50px;" value="{{ da[7] }}" required>
+        </div>
+        <div class="form-group">
+            <center>
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="Active">Active</option>
+                    <option value="Not Active">Not Active</option>
+                </select>
+            </center>
+        </div>
+        <button type="submit">Update</button>
+    </form>
+    <div style="border: 1px solid #041E42;" class="button-back">
+        <a style="color: #041E42;" href="/event" class="previous">&laquo; Go Back</a>
+    </div>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Set the minimum date for the "Date Start" input to be the current date
+        const currentDate = new Date().toISOString().split("T")[0];
+        document.getElementById("start").min = currentDate;
+    });
+function updateEndDate() {
+    const startDateInput = document.getElementById('start');
+    const endDateInput = document.getElementById('end');
+    
+    // Set the minimum date for the "Date End" input to be the selected "Date Start"
+    endDateInput.min = startDateInput.value;
+    
+    // Reset the "Date End" value if it's before the selected "Date Start"
+    if (endDateInput.value < startDateInput.value) {
+        endDateInput.value = startDateInput.value;
+    }
+}
+
+function updateEndTime() {
+    const startTimeInput = document.getElementById('timestart');
+    const endTimeInput = document.getElementById('timeend');
+    
+    // Set the minimum time for the "Time End" input to be the selected "Time Start"
+    endTimeInput.min = startTimeInput.value;
+    
+    // Reset the "Time End" value if it's before the selected "Time Start"
+    if (endTimeInput.value < startTimeInput.value) {
+        endTimeInput.value = startTimeInput.value;
+    }
+}
+
+</script>
+</html>

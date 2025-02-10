@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url("static/builtin/bg7.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            background-image: white;
+            padding: 50px;
+            /* Increase padding to make the container bigger */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border: 2px solid #041E42;
+            text-align: center;
+            max-width: 500px;
+            /* Adjust the max-width to make the container wider */
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 400px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 2px solid #041E42;
+            border-radius: 5px;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 2px solid #041E42;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .generateBtn {
+            padding: 10px 20px;
+            background-color: #041E42;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .generateBtn:hover {
+            background-color: #2980b9;
+        }
+
+        #qrcode-container {
+            margin-top: 20px;
+        }
+
+        #qrcode {
+            text-align: center;
+        }
+
+        #qr-image {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .button-back {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* Align the button to the start */
+        }
+
+        .button-back a {
+            display: inline-block;
+            background-color: #041E42;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            margin-bottom: 10px;
+            /* Add margin between the buttons */
+        }
+
+        .button-back a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>Add Student</h1>
+            <form action="insert_process" method="POST">
+                <div class="form-group">
+                    <label for="id"></label>
+                    <input type="text" name="id" id="id" placeholder="USN">
+                </div>
+                <div class="form-group">
+                    <label for="fname"></label>
+                    <input type="text" name="fname" id="fname" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                    <label for="mname"></label>
+                    <input type="text" name="mname" id="mname" placeholder="Middle Name">
+                </div>
+                <div class="form-group">
+                    <label for="lname"></label>
+                    <input type="text" name="lname" id="lname" placeholder="Last Name">
+                </div>
+                <div class="form-group">
+                    <label for="email"></label>
+                    <input type="text" name="email" id="email" placeholder="Email" value="@aclcbutuan.edu.ph">
+                </div>
+                <div class="form-group">
+                    <label for="department">Select Department</label>
+                    <select id="department" name="department">
+                        <option value="BED">BED</option>
+                        <option value="CED">CED</option>
+                        <option value="TED">TED</option>
+                    </select>
+                </div>
+                <button type="submit" id="registerBtn" onclick="showSuccessPopup()" style="display: none;">Done</button>
+                <button type="button" class="generateBtn" onclick="generateAndSaveQRCode()">Generate QR Code</button>
+            </form>
+        </div>
+
+        <!-- Container to display the generated QR code -->
+        <div id="qrcode-container" style="display: none;">
+            <h2>Generated QR Code</h2>
+            <div id="qrcode">
+                <img id="qr-image" alt="QR Code">
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the QR code generation library -->
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+    <script>
+        function capitalizeFirstLetter(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function isValidEmail(email) {
+            // Use a regular expression to check if the email ends with "@aclcbutuan.edu.ph"
+            const regex = /@aclcbutuan\.edu\.ph$/i;
+            return regex.test(email);
+        }
+
+        function generateAndSaveQRCode() {
+            let usn = document.getElementById("id").value;
+            let fname = capitalizeFirstLetter(document.getElementById("fname").value);
+            let mname = capitalizeFirstLetter(document.getElementById("mname").value);
+            let lname = capitalizeFirstLetter(document.getElementById("lname").value);
+            let email = document.getElementById("email").value;
+            let department = capitalizeFirstLetter(document.getElementById("department").value);
+
+            if (usn && fname && lname && email && department) {
+                // Validate the email address
+                if (!isValidEmail(email)) {
+                    alert("Please enter a valid @aclcbutuan.edu.ph email address.");
+                    return;
+                }
+
+                let qrcodeContent = `${usn}, ${fname} ${lname}, ${department}`;
+                let qrcodeContainer = document.getElementById("qrcode");
+                qrcodeContainer.innerHTML = "";
+                new QRCode(qrcodeContainer, qrcodeContent);
+
+                // Create an img element and set its src attribute
+                let qrImage = document.createElement("img");
+                qrImage.id = "qr-image";
+                qrImage.alt = "QR Code";
+                qrImage.src = qrcodeContainer.querySelector("canvas").toDataURL("image/png");
+
+                // Append the img element to the qrcodeContainer
+                qrcodeContainer.innerHTML = "";
+                qrcodeContainer.appendChild(qrImage);
+
+                // Trigger a POST request to save the image on the server
+                fetch("/save_qr_image", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ 
+                        image: qrImage.src,
+                        id: usn
+                    }), // Replace 'id' with 'usn'
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("QR code image saved successfully.");
+                        } else {
+                            alert("Failed to save QR code image.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error saving QR code image:", error);
+                    });
+
+                // Show the "Register" button and hide the "Generate QR Code" button
+                document.getElementById("registerBtn").style.display = "block";
+                document.querySelector(".generateBtn").style.display = "none";
+
+                document.getElementById("qrcode-container").style.display = "block";
+            } else {
+                alert("Please fill in all required fields.");
+            }
+        }
+
+        function showSuccessPopup() {
+            alert('Successfully Registered!');
+        }
+        
+    </script>
+    <div class="button-back">
+        <a href="view" class="previous">&laquo; Go Back</a>
+    </div>
+</body>
+
+</html>

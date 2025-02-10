@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            background-image: url("static/builtin/bj1.jpg"); /* Update the path to your image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .widget {
+            width: 300px; /* Adjust the width as needed */
+            height: 500px; /* Adjust the height as needed */
+            background-color: #fff; /* Adjust the background color as needed */
+            border: 5px solid #333; /* Adjust the border color as needed */
+            text-align: center;
+            line-height: 200px; /* Align content vertically in the middle */
+            margin: 10px; /* Adjust the margin as needed */
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="qr-code-widget">
+        <!-- The QR code will be displayed here -->
+    </div>
+    
+</body>
+<script>
+    // Parse the USN parameter from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const usn = urlParams.get('usn');
+
+    if (usn) {
+        // If USN is present, display the QR code in the widget
+        const qrCodeWidget = document.getElementById('qr-code-widget');
+
+        // Create an img element
+        const qrImage = document.createElement('img');
+        qrImage.id = 'qr-image-widget';
+
+        // Set the src attribute to the generated QR code image
+        qrImage.src = `/attendance system - Copy (3)/QRcode/${usn}.png`; // Replace with the actual path
+
+        // Append the img element to the qrCodeWidget
+        qrCodeWidget.appendChild(qrImage);
+    }
+</script>
+
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background:  url("static/builtin/bg6.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .logo {
+            width: 210px;
+            margin-top: -500px; 
+            position: absolute;
+            left: 10%;
+            transform: translateX(-50%);
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #041E42;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+            text-align: center; /* Center align the form group */
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color:  #041E42;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #041E42;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .login-btn,
+        .back-btn {
+            width: 40%; /* Adjusted width for both buttons */
+            padding: 8px; /* Set padding for both buttons */
+            border: none;
+            border-radius: 5px;
+            margin: 0 5px; /* Added margin between buttons */
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-btn {
+            background-color:#041E42;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+
+        .back-btn {
+            background-color: white; /* Grey button color */
+            color: black;
+            border: 1px solid #041E42;
+        }
+
+        .back-btn:hover {
+            background-color: #bbb; /* Darker grey on hover */
+        }
+
+        .form-group-pin {
+            display: none;
+        }
+
+        .pin-input {
+            width: 50px;
+            padding: 10px;
+            border: 1px solid #3498db; /* Blue border color */
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <img alt="logo" src="static/builtin/aclc.png" class="logo">
+
+    <div class="login-container">
+        <h1 style="color:#041E42;">SSG Login</h1>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        <form action="/ssg" method="post" onsubmit="promptForPin()">
+            <div class="form-group" id="email-group">
+                <label for="insti_email"></label>
+                <input type="email" name="insti_email" id="insti_email" placeholder="Enter Institutional Email" required>
+            </div>
+            <div class="form-group" id="password-group">
+                <label for="password"></label>
+                <input type="password" name="password" id="password" placeholder="Enter Password" required>
+                <input type="checkbox" onclick="togglePassword()"> Show Password
+            </div>
+            <input type="submit" class="login-btn" value="Login">
+            <button type="button" class="back-btn" onclick="goBack()">Back</button>
+        </form>
+    </div>
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+
+        function validateEmail() {
+            var emailField = document.getElementById("insti_email");
+            var email = emailField.value.trim().toLowerCase();
+            if (!email.endsWith("@aclcbutuan.edu.ph")) {
+                alert("Please enter a valid @aclcbutuan.edu.ph email address.");
+                return false;
+            }
+            return true;
+        }
+
+        function promptForPin(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Prompt user for PIN
+            const enteredPin = prompt('Enter 4-digit PIN:');
+
+            // Check if the PIN is correct (you can replace '1234' with your desired PIN)
+            if (enteredPin === '1234') {
+                // Set the flag indicating that the PIN has been entered successfully
+                sessionStorage.setItem('pinEntered', 'true');
+                // Submit the form programmatically
+                document.querySelector('form').submit();
+            } else {
+                // Show an alert or take appropriate action for incorrect PIN
+                alert('Incorrect PIN. Access denied.');
+                // Redirect to home or take other actions as needed
+                window.location.href = 'login2';
+            }
+        }
+        
+        // Attach the promptForPin function to the form's submit event
+        document.querySelector('form').addEventListener('submit', promptForPin);
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+</body>
+
+</html>

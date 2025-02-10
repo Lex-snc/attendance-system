@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url("static/builtin/bg7.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .navbar {
+            background-color: #041E42;;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 15px 20px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            transition: background-color 0.2s;
+            margin-right: 10px; 
+        }
+
+        .navbar a:last-child {
+            margin-right: 0;
+        }
+
+        .navbar a:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .dashboard-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            border: 1px solid #041E42;
+        }
+
+        .widget-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .dashboard-widget {
+            flex: calc(48% - 10px);
+            margin: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+            border: 3px solid #041E42;
+        }
+
+        .dashboard-widget:hover {
+            transform: translateY(-5px);
+        }
+
+        .widget-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color:  #041E42;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .widget-button:hover {
+            background-color: #0056b3;
+        }
+
+        .button-back {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .button-back a {
+            text-decoration: none;
+            background-color: #041E42;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .button-back a:hover {
+            background-color: #007bff;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #b91136;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #410613;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="ssgeventlist">Events</a>
+        <a href="ssglist2">List of Officers</a>
+    </div>
+    <div class="dashboard-container">
+        <div class="widget-container">
+            <div class="dashboard-widget">
+                <h2 style = "color: royalblue;">Time in</h2>
+                <a href="ssgscanner2"><button class="widget-button">Start</button></a>
+            </div>
+            <div class="dashboard-widget">
+                <h2 style = "color: darkred;">Time Out</h2>
+                <a href="ssg_logout"><button class="widget-button">Start</button></a>
+            </div>
+        </div>
+    </div>
+    <div class="button-back">
+        <a href="ssgdash" class="previous">&laquo; Back</a>
+    </div>
+
+    <script>
+        const logoutButton = document.getElementById('logoutButton');
+        logoutButton.addEventListener('click', function() {
+            logoutUser();
+        });
+
+        function logoutUser() {
+        // Replace the current URL with the main page URL
+        history.replaceState(null, null, '/');
+        // Redirect to the main page
+        window.location.href = '/';
+        }   
+    </script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>QR Code Scanner</title>
+    <link rel="stylesheet" >
+<style>
+ body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: linear-gradient(rgba(0, 0, 100, 0.300), rgba(35, 0, 0, 0.4)),url("static/builtin/bj2.jpg");
+
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+        }
+
+        #scanner-container {
+            position: relative;
+            border: 2px solid #333;
+            padding: 16px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #scanner {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 24px;
+        }
+
+        .alert {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            display: none;
+            margin-top: 16px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            margin: 10px;
+            padding: 10px 30px; /* Adjusted padding */
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #b91136;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 30px; /* Adjusted padding */
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Style for the form */
+        form {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Style for the label */
+        label {
+            font-size: 16px;
+            margin-right: 10px;
+            color: #ffffff;
+        }
+
+        /* Style for the select element */
+        select {
+            padding: 1px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+            height: 38px;
+            margin-right: 10px;
+            padding: 10px 30px; /* Adjusted padding */
+        }
+
+        a {
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 30px; /* Adjusted padding */
+        }
+
+        .previous {
+            background-color: #f1f1f1;
+            color: black;
+        }
+
+        .round {
+            border-radius: 50%;
+        }
+
+        .button-back {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .button-back button {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            padding: 10px 30px; /* Adjusted padding */
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="scanner-container">
+        <h1>QR Code Scanner</h1>
+        <video id="scanner" playsinline></video>
+        <div class="alert" id="scanResultAlert">USN:</div>
+    </div>
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+
+    <div class="button-container">
+        <a href="op2"><button>Option 2</button></a>
+        <div class="button-container">
+            <select id="event" onchange="handleSelectChange()">
+            <option value="">Select an Event</option>
+            </select>
+        </div>
+</div>
+</body>
+<div class="button-back">
+    <a href="s_dash" class="previous">&laquo;  Back</a>
+</div>
+</html>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const scannerContainer = document.getElementById('scanner-container');
+    const scanner = new Instascan.Scanner({ video: document.getElementById('scanner') });
+
+    Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+        } else {
+            console.error('No cameras found.');
+        }
+    }).catch(function (error) {
+        console.error('Error accessing camera:', error);
+    });
+
+    scanner.addListener('scan', function (content) {
+        const scanResultAlert = document.getElementById('scanResultAlert');
+        scanResultAlert.textContent = 'Scanned content: ' + content;
+        scanResultAlert.style.display = 'block';
+
+        // Split the content into USN and full name
+        const [usn, fullname, department] = content.split(', ');
+
+        setTimeout(function () {
+            scanResultAlert.style.display = 'none';
+        }, 3000);
+
+        // Send the scanned content to the Flask server
+        saveScannedData(usn, fullname, department);
+    });
+});
+
+function saveScannedData(content, fullname, department) {
+        const selectedEventId = document.getElementById('event').value;
+        const selectedEventName = document.getElementById('event').options[document.getElementById('event').selectedIndex].text;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/save_data_out', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                } else {
+                    console.error('Error saving data.');
+                }
+            }
+        };
+
+        // Get the current datetime in 12-hour format with AM/PM
+        const currentDatetime = getCurrentDatetime();
+
+        xhr.send(JSON.stringify({
+            "usn": content,
+            "fullname": fullname,
+            "event": selectedEventName,
+            "department": department, // Send the event name
+            "datetime": currentDatetime
+        }));
+    }
+
+
+function getCurrentDatetime() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+
+    // Convert hours to 12-hour format
+    const hours12 = hours % 12 || 12;
+
+    // Determine AM or PM based on the current hour
+    const ampm = hours < 12 ? 'AM' : 'PM';
+
+    // Format the datetime as a string in 12-hour format with AM/PM
+    const formattedTime = `${hours12}:${padZero(minutes)}:${padZero(seconds)} ${ampm}`;
+
+    return formattedTime;
+}
+
+function padZero(number) {
+    return number < 10 ? `0${number}` : number;
+}
+
+function populateEvents() {
+            // Ensure the DOM is fully loaded before accessing elements
+            document.addEventListener('DOMContentLoaded', function() {
+                const selectElement = document.getElementById('event');
+
+                // Check if the element exists before adding an event listener
+                if (selectElement) {
+                    selectElement.addEventListener('change', handleSelectChange);
+                }
+
+                const xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const events = JSON.parse(xhr.responseText);
+
+                            events.forEach(event => {
+                                const option = document.createElement('option');
+                                option.value = event.id;
+                                option.textContent = event.event;
+                                selectElement.appendChild(option);
+                            });
+                        } else {
+                            console.error('Error fetching events:', xhr.status);
+                        }
+                    }
+                };
+                xhr.open('GET', '/get_events1');
+                xhr.send();
+            });
+        }
+
+        function handleSelectChange() {
+            const selectedEventId = document.getElementById('event').value;
+            console.log('Selected event ID:', selectedEventId);
+        }
+
+        // Populate events on page load
+        populateEvents();
+</script>
+</html>

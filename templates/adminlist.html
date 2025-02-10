@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            background-image: url("static/builtin/bg7.jpg"); /* Update the path to your image */
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .navbar {
+            position: fixed;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    background-color: #041E42;
+    padding: 15px 20px;
+    margin-top: -100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 800; /* Set a higher z-index to ensure the navbar is above other elements */
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            transition: background-color 0.2s;
+            margin-right: 10px; /* Add spacing between navbar items */
+        }
+
+        .navbar a:hover {
+            background-color: white;
+            color:black;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 100px auto;
+            border: 2px solid #041E42;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(0px); /* Apply a blur effect to the background */
+        }
+
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background: #fafafa;
+            border-radius: 10px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #041E42;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            font-size: 14px;
+            border-right: 1px solid #041E42;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+            transition: all 0.3s;
+        }
+
+        .add-button {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .add-button a {
+            display: inline-block;
+            background-color: #041E42;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .add-button a:hover {
+            background-color: #0056b3;
+        }
+
+        .button-container {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .button-container:hover {
+            background-color: #0056b3;
+        }
+
+        .button-back {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .button-back a {
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            margin-bottom: 10px;
+            background-color: #041E42;
+            color: white;
+        }
+
+        .button-back a:hover {
+            background-color: #007bff;
+        }
+
+        /* Modern styles for delete and update buttons */
+        .table-container td a {
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin: 0 5px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .table-container td a:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .user-icon {
+            max-width: 60px;
+            max-height: 100px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="view">List of Students</a>
+        <a href="event">Events</a>
+        <a href="ssglist">SSG Officers</a>
+    </div>
+    <div class="container">
+        <center>
+            <h1>Administrator</h1>
+        </center>
+        <div class="add-button">
+            <a href="/ADD">Add</a>
+        </div>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th></th>
+                </tr>
+                {% for y in yan %}
+                    <tr>
+                        <td><img src="static/builtin/user.png" alt="User Icon" class="user-icon"></td>
+                        <td>{{ y[1] }}</td>
+                        <td class="hidden-password" data-real-password="{{ y[2] }}">********</td>
+                        <td>
+                            <a href="#" onclick="togglePasswordVisibility(this.parentElement.parentElement.querySelector('.hidden-password'))">Toggle Password</a>
+                            <a href="/delete_process2/{{ y[0] }}" onclick="promptPasswordAndProceed('delete', this.parentElement.parentElement)" class="delete-button" disabled>Delete</a>
+                            <a href="/update5/{{ y[0] }}" onclick="promptPasswordAndProceed('update', this.parentElement.parentElement)" class="update-button" disabled>Update</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="button-back">
+        <a href="dash" class="previous">&laquo;  Back</a>
+    </div>
+    <script>
+        function togglePasswordVisibility(passwordElement) {
+            var isHidden = passwordElement.classList.contains('hidden-password');
+            var realPassword = passwordElement.dataset.realPassword;
+    
+            if (isHidden) {
+                var userPassword = prompt('Enter your password for this row:');
+    
+                if (userPassword !== null && userPassword === realPassword) {
+                    passwordElement.classList.remove('hidden-password');
+                    passwordElement.innerText = realPassword;
+                    enableRowActions(passwordElement.parentElement);
+                } else {
+                    alert('Incorrect password. Access denied.');
+                }
+            } else {
+                passwordElement.classList.add('hidden-password');
+                passwordElement.innerText = '*'.repeat(realPassword.length);
+                disableRowActions(passwordElement.parentElement);
+            }
+        }
+    </script>
+    
+    
+</body>
+</html>
