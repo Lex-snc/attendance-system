@@ -1,5 +1,5 @@
-from flask import Flask, jsonify, render_template, request, redirect, url_for, session
-from flask_mysqldb import MySQLdb
+from flask import Flask, jsonify, render_template, request, redirect, url_for, session, send_file
+import MySQLdb
 from flask import Flask, render_template, send_file
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
@@ -10,6 +10,8 @@ import mysql.connector
 import qrcode
 import base64
 from functools import wraps
+import pandas as pd
+import io
 
 
 
