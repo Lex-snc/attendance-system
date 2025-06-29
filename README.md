@@ -1,1 +1,3 @@
-attendance-system-using-qrcode-scanner
+Event attendance-system-using-qrcode-scanner
+python flask
+
